@@ -24,17 +24,17 @@ class Solution {
             ret.add(new ArrayList<>());
             int length = q.size();
             for(int i = 0; i < length; i++){
-              TreeNode tmp = q.remove();
-              ret.get(level).add(tmp.val);
-              if(tmp.left != null){
-                q.add(tmp.left);
-              }
-              if(tmp.right != null){
-                q.add(tmp.right);
-              }
+                TreeNode tmp = q.poll();
+                ret.get(level).add(tmp.val);
+                if(tmp.left != null){
+                    q.add(tmp.left);
+                }
+                if(tmp.right != null){
+                    q.add(tmp.right);
+                }
             }
             level++;
         }
-      return ret;
+        return ret;
     }
 }
