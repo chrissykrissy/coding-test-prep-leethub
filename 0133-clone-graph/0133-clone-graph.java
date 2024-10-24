@@ -20,27 +20,33 @@ class Node {
 
 class Solution {
     /*
-    TC : O(N + M) where N is the number of nodes and M is a number of edges
-    SC : O(N) visited hash map and recursion stack O(H) height of the graph
+    TC : O(N + M) N is num of nodes and M is num of edges
+    SC : O(N) visited hashMap, recursion stack O(Height of the graph) H < N so
     */
-    Map<Integer, Node> visited = new HashMap<>();
+    private HashMap<Node, Node> visited = new HashMap<>();
 
     public Node cloneGraph(Node node) {
-        if(node == null) return null;
-
-        //if the node was already visited before,
-        //return the clone from the visited dict
-        if(visited.containsKey(node.val)) return visited.get(node.val);
-        
-        //create a clone for the given node
-        Node newNode = new Node(node.val, new ArrayList<Node>());
-        visited.put(newNode.val, newNode);
-        //iterate through the neighbors to generate their clones
-        //and prepare a list of clones neighbors to be added to the cloned node
-        for (Node n : node.neighbors){
-            newNode.neighbors.add(cloneGraph(n));
+        if(node == null){
+            return null;
         }
 
-        return newNode;
+        //if the node was already visited before
+        //return the clone from the visited dic
+        if(visited.containsKey(node)){
+            return visited.get(node);
+        }
+
+        //create a clone for the given node
+        // note that we don't have cloned neighbors yet
+        Node cloneNode = new Node(node.val, new ArrayList<>());
+        //the key is original node and the v is the clone node
+        visited.put(node, cloneNode);
+
+        //iterate the neighbors to generate their clones
+        //prepare a list of cloned neighbors to be added to the cloned node
+        for(Node n : node.neighbors){
+            cloneNode.neighbors.add(cloneGraph(n));
+        }
+        return cloneNode;
     }
 }
