@@ -1,36 +1,29 @@
 class Solution {
-    int time = 0; 
-    int[][] dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     public int orangesRotting(int[][] grid) {
-        Queue<int[]> q = new LinkedList<>();
         for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[i].length; j++){
-                if(grid[i][j] == 2){
-                    q.offer(new int[]{i, j, 0});
-                }
+            for (int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == 2) rot(grid, i, j, 2);
             }
         }
-        while(!q.isEmpty()){
-            int[] curr = q.poll();
-            time = Math.max(time, curr[2]);
-            for(int[] d : dir){
-                int nx = curr[0]+d[0];
-                int ny = curr[1]+d[1];
-                if(nx >= 0 && ny >= 0 && nx < grid.length && ny < grid[nx].length && grid[nx][ny] == 1){
-                    q.offer(new int[]{nx, ny, curr[2]+1});
-                    grid[nx][ny] = 2;
-                }
+        int min = 2;
+        for (int[] row : grid){
+            for(int cell : row){
+                if (cell == 1) return -1;
+                min = Math.max(min, cell);
             }
         }
+        return min - 2;
+    }
 
-        for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[i].length; j++){
-                if(grid[i][j] == 1){
-                    return -1;
-                }
-            }
+    public void rot(int[][]grid, int i, int j, int time){
+        if(i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == 0 || (1 < grid[i][j] && grid[i][j] < time)){
+            return;
         }
-        
-        return time;
+        grid[i][j] = time;
+        time += 1;
+        rot(grid, i + 1, j, time);
+        rot(grid, i - 1, j, time);
+        rot(grid, i, j + 1, time);
+        rot(grid, i, j -1, time);
     }
 }
