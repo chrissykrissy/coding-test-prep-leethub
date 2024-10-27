@@ -1,17 +1,26 @@
 class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
-        List<Integer> ret = new ArrayList<>();
-        spiral(matrix, matrix.length, matrix[0].length, ret, 0, -1, 0, 1);
-        return ret;
-    }
-
-    public void spiral(int[][]matrix, int m, int n, List<Integer> ret, int r, int c, int dr, int dc){
-        if(m == 0 || n == 0) return;
-        for (int i = 0; i < n; i++){
-            r = r + dr;
-            c = c + dc;
-            ret.add(matrix[r][c]);
+        List<Integer> res = new ArrayList<>();
+        int r = matrix.length;
+        int c = matrix[0].length;
+        if(r == 0) return res;
+        boolean[][] visited = new boolean[r][c];
+        int[][] dir = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+        int x = 0, y = 0, d = 0;
+        while(res.size() < r * c){
+            visited[x][y] = true;
+            res.add(matrix[x][y]);
+            int nx = x + dir[d%4][0];
+            int ny = y + dir[d%4][1];
+            if(nx >= 0 && ny >= 0 && nx < r && ny < c && !visited[nx][ny]){
+                x = nx;
+                y = ny;
+            }else{
+                d++;
+                x += dir[d%4][0];
+                y += dir[d%4][1];
+            }
         }
-        spiral(matrix, n, m-1, ret, r, c, dc, -dr);
+        return res;
     }
 }
