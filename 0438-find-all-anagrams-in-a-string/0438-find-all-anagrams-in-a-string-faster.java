@@ -1,38 +1,32 @@
 class Solution {
-    public List<Integer> findAnagrams(String s, String p) {
-        List<Integer> indexes = new ArrayList<>();
-        HashMap<Character, Integer> freq = new HashMap<>();
-        for(Character c : p.toCharArray()){
-            freq.put(c, freq.getOrDefault(c, 0)+1);
-        }
+  public List<Integer> findAnagrams(String s, String p) {
+    int ns = s.length(), np = p.length();
+    if (ns < np) return new ArrayList();
 
-        int winL = 0, winR = p.length()-1;
-        while(winR < s.length()){
-            if(isAnagram(s, winL, winR, freq)){
-                indexes.add(winL);
-            }
-            winL++;
-            winR++;
-        }
-        return indexes;
-
+    int [] pCount = new int[26];
+    int [] sCount = new int[26];
+    // build reference array using string p
+    for (char ch : p.toCharArray()) {
+      pCount[(int)(ch - 'a')]++;
     }
 
-    public boolean isAnagram(String s, int i, int j, HashMap<Character, Integer> map){
-        int[] freq = new int[26];
-        while(i <= j){
-            Character c = s.charAt(i);
-            freq[c-'a']++;
-            i++;
-        }
-
-        for(int f = 0; f < 26; f++){
-            if(freq[f]!= 0){
-                if(!map.containsKey((char)(f+'a')) ||freq[f] != map.get((char)(f+'a'))){
-                    return false;
-                }
-            }
-        }
-        return true;
+    List<Integer> output = new ArrayList();
+    // sliding window on the string s
+    for (int i = 0; i < ns; ++i) {
+      // add one more letter 
+      // on the right side of the window
+      sCount[(int)(s.charAt(i) - 'a')]++;
+      // remove one letter 
+      // from the left side of the window
+      if (i >= np) {
+        sCount[(int)(s.charAt(i - np) - 'a')]--;
+      }
+      // compare array in the sliding window
+      // with the reference array
+      if (Arrays.equals(pCount, sCount)) {
+        output.add(i - np + 1);
+      }
     }
+    return output;
+  }
 }
