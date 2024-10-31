@@ -1,35 +1,40 @@
 class Solution {
+        /*
+    Find the largest index k such that a[k] < a[k + 1]. If no such index exists, the permutation is the last permutation.
+    Find the largest index l greater than k such that a[k] < a[l].
+    Swap the value of a[k] with that of a[l].
+    Reverse the sequence from a[k + 1] up to and including the final element a[n].
+     */
     public void nextPermutation(int[] nums) {
-        int k = -1;
-        for(int i = 0; i < nums.length-1;i++){
+        int pivot = -1;
+        for (int i = 0; i < nums.length-1; i++) {
             if(nums[i] < nums[i+1]){
-                k = i;
+                pivot = i;
             }
         }
-        if(k == -1) {
-            Arrays.sort(nums);
-            return;
-        }
-
         int l = -1;
-        for(int i = 0; i < nums.length; i++){
-            if(nums[i] > nums[k]){
-                l = i;
+        if(pivot != -1){
+            for (int i = 0; i < nums.length; i++) {
+                if(nums[pivot] < nums[i]){
+                    l = Math.max(l, i);
+                }
             }
+            int temp = nums[pivot];
+            nums[pivot] = nums[l];
+            nums[l] = temp;
+            reverse(nums, pivot+1, nums.length-1);
+        }else{
+            reverse(nums, 0, nums.length-1);
+
         }
-
-        int temp = nums[k];
-        nums[k] = nums[l];
-        nums[l] = temp;
-        reverse(nums, k+1, nums.length-1);
-        
     }
-
     public void reverse(int[] nums, int i, int j){
         while(i < j){
             int temp = nums[i];
             nums[i] = nums[j];
             nums[j] = temp;
+            i++;
+            j--;
         }
     }
 }
