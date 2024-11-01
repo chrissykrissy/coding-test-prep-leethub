@@ -1,31 +1,35 @@
 class Solution {
-    
-    public int calculate(String s){
+    public int calculate(String s) {
         Stack<Integer> stk = new Stack<>();
-        int answer = 0, sign = 1;
+        int result = 0;
+        int sign = 1; //-1 for neg
+        int num = 0;
         for(int i = 0; i < s.length(); i++){
             char c = s.charAt(i);
             if(Character.isDigit(c)){
-                int sum = c - '0';
-                while(i+1 < s.length() && Character.isDigit(s.charAt(i+1))){
-                    sum = sum * 10 + (s.charAt(i+1) - '0');
-                    i++;
-                }
-                answer += sum * sign;
+                num = num * 10 + (c-'0');
             }else if(c == '+'){
+                result += sign * num;
                 sign = 1;
-            }else if(c == '-'){
+                num = 0;
+            }else if (c == '-'){
+                result += sign * num;
                 sign = -1;
-            }else if(c == '('){
-                stk.push(answer);
+                num = 0;
+            }else if (c == '('){
+                stk.push(result);
                 stk.push(sign);
-                answer = 0;
+                
+                //rest new eval coming for sub
                 sign = 1;
-            }else if(c == ')'){
-                answer = answer * stk.pop() + stk.pop();
+                result = 0;
+            }else if (c == ')'){
+                result += sign * num;
+                result *= stk.pop();
+                result += stk.pop();
+                num = 0;
             }
         }
-        
-        return answer;
+        return result + (sign * num);
     }
 }
