@@ -14,7 +14,7 @@ class RandomizedSet {
         } else {
             set.add(val);
             map.put(val, set.size()-1);
-            System.out.println(set);
+            // System.out.println(set);
         }
         return true;
     }
@@ -26,7 +26,7 @@ class RandomizedSet {
             set.remove(set.size()-1);
             map.put(temp, map.get(val));
             map.remove(val);
-            System.out.println(set);
+            //System.out.println(set);
             return true;
         } else {
             return false;
