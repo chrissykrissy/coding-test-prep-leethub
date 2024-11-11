@@ -1,10 +1,23 @@
 class Solution {
     public int hIndex(int[] citations) {
-        Arrays.sort(citations);
-        int h = 0;
-        while (h < citations.length && citations[citations.length - 1 - h] > h) {
-            h++;
+        int len = citations.length;
+        int[] count = new int[len + 1];
+
+        for (int c : citations) {
+            if (c > len) {
+                count[len]++;
+            } else {
+                count[c]++;
+            }
         }
-        return h;
+
+        int total = 0;
+        for (int i = len; i >= 0; i--) {
+            total += count[i];
+            if (total >= i) {
+                return i;
+            }
+        }
+        return 0;
     }
 }
