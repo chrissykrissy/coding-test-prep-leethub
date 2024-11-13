@@ -1,28 +1,15 @@
 class Solution {
     public boolean isSubsequence(String s, String t) {
-        if (s.equals("")) {
-            return true; 
-        }
-        // i pointer maps to t 
-        // j pointer maps to s
-
-        int i = 0, j = 0; 
-        while (i < t.length() && j < s.length()) {
-            // characters are same, move both forward 
-            if (t.charAt(i) == s.charAt(j)) {
-                i++;
-                j++;
-            }
-            // move i forward to try and find something that matches j 
-            else {
+        if (s.length() == 0) return true;
+        int i = 0;
+        for (int j = 0; j < t.length() && i < s.length(); j++) {
+            if (s.charAt(i) == t.charAt(j)) {
                 i++;
             }
-
-            if (j == s.length()) {
-                return true; 
-            }
         }
-        
-        return false; 
+        if (i == s.length()) {
+            return true;
+        }
+        return false;
     }
 }
