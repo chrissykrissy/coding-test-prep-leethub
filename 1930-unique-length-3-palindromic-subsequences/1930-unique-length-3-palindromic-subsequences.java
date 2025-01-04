@@ -17,12 +17,6 @@ class Solution {
             firstIndex = -1;
             lastIndex = -1;
         }
-    //     for (int i = arr.length-1; i > 1; i--) {
-    //         if (arr[i] == arr[firstIndex]) {
-    //             lastIndex = i;
-    //             total += countUnique(firstIndex, lastIndex); 
-    //         }
-    //     }
         return total;
     }
 
