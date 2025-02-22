@@ -1,57 +1,34 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
+    private String s;
+    private int idx, level;
+    
     public TreeNode recoverFromPreorder(String traversal) {
-        Stack<TreeNode> stk = new Stack<>();
-        int index = 0;
-        
-        while (index < traversal.length()) {
-            int depth = 0;
+        this.s = traversal;
+        this.idx = 0;
+        this.level = 0;
+        TreeNode node = new TreeNode(-1);
+        this.helper(node, 0);
+        return node.left;
+    }
+
+    private void helper(TreeNode parent, int lvl) {
+        while (this.idx < this.s.length() && lvl == level) {
+            int num = 0;
+            while (this.idx < this.s.length() && Character.isDigit(this.s.charAt(this.idx))) {
+                num = num * 10 + (this.s.charAt(this.idx++) - '0');
+            }
+            TreeNode node = new TreeNode(num);
+            if (parent.left == null)
+                parent.left = node;
+            else
+                parent.right = node;
             
-            while (index < traversal.length() && traversal.charAt(index) == '-') {
-                depth++;
-                index++;
+            this.level = 0;
+            while (this.idx < this.s.length() && this.s.charAt(this.idx) == '-') {
+                this.level++;
+                this.idx++;
             }
-
-            int value = 0;
-            while (index < traversal.length() && Character.isDigit(traversal.charAt(index))) {
-                value = value * 10 + (traversal.charAt(index) - '0');
-                index++;
-            }
-
-            TreeNode node = new TreeNode(value);
-
-            while (stk.size() > depth) {
-                stk.pop();
-            }
-
-            if (!stk.empty()) {
-                if (stk.peek().left == null) {
-                    stk.peek().left = node;
-                } else {
-                    stk.peek().right = node;
-                }
-            }
-
-            stk.push(node);
+            this.helper(node, lvl + 1);
         }
-        while (stk.size() > 1) {
-            stk.pop();
-        }
-
-        return stk.peek();
     }
 }
